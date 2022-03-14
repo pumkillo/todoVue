@@ -29,12 +29,35 @@
                 </div>
             </div>
             <!-- /search -->
+            <div class="d-flex justify-content-center align-items-center sorts">
+                <p style="margin-right: 12px; margin-bottom: 0;">Sort by</p>
+                <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                    <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off"
+                        v-model="sortingCriteria" value="name">
+                    <label class="btn btn-outline-primary" for="btnradio1">name</label>
+
+                    <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off"
+                        v-model="sortingCriteria" value="date">
+                    <label class="btn btn-outline-primary" for="btnradio2">date</label>
+
+                    <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off"
+                        v-model="sortingCriteria" value="priority">
+                    <label class="btn btn-outline-primary" for="btnradio3">priority</label>
+                </div>
+                <div class="btn-group sortall" role="group" aria-label="Basic radio toggle button group">
+                    <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off"
+                        v-model="sortingCriteria" value="all">
+                    <label class="btn btn-outline-primary" for="btnradio4">Show all</label>
+                </div>
+            </div>
+
+
             <p v-if="queryLength === 0">No notes found</p>
 
-            <div class="d-flex justify-content-center notes" v-for="(note, index1) in queryRes" :key="index1">
+            <div class="d-flex justify-content-center notes" v-for="(note, index1) in sortedQueryRes" :key="index1">
                 <!-- color block -->
                 <color-block :color="note.color"></color-block>
-                <div class="container d-flex flex-column border border-2 border-start-0">
+                <div class="container d-flex flex-column border border-2 border-start-0" :style="{borderColor: `${note.color}!important`}">
                     <div class="d-flex flex-row justify-content-between align-items-center border-bottom border-2">
                         <input v-model.trim.lazy="note.name" class="form-control title" placeholder="Note title...">
                         <div class="container d-flex flex-row justify-content-end align-items-center">
@@ -43,16 +66,24 @@
 
                         </div>
                     </div>
-                    <div class="d-flex align-items-center listitem" v-for="(item, index2) in note.todolist" :key="index2">
-                        <input class="form-check-input" type="checkbox" value="" :id="[index1, index2]">
-                        <label class="form-check-label " :for="[index1, index2]">
-                            <h6>{{note.todolist[index2]}}</h6>
-                        </label>
+                    <div class="d-flex align-items-center listitem justify-content-between" v-for="(item, index2) in note.todolist" :key="index2">
+                        <div>
+                            <input class="form-check-input" type="checkbox" :id="'check-'+[index1, index2]" v-model="note.todolist[index2].checked">
+                            <label class="form-check-label " :for="'check-'+[index1, index2]">
+                                <h6>{{note.todolist[index2].name}}</h6>
+                            </label>
+                        </div>
+                        <div class="btn-group" id="priority" role="group" aria-label="Basic checkbox toggle button group">
+                            <input type="checkbox" class="btn-check" :id="'importance-'[index1, index2]" autocomplete="off" value="important" v-model="note.todolist[index2].priority">
+                            <label class="btn btn-outline-dark" :for="'importance-'[index1, index2]">important</label>
+
+                            <input type="checkbox" class="btn-check" :id="'urgency-'[index1, index2]" autocomplete="off" value="urgent" v-model="note.todolist[index2].priority">
+                            <label class="btn btn-outline-dark" :for="'urgency-'[index1, index2]">urgent</label>
+                        </div>
                     </div>
                     <div class="d-flex align-items-center listitem">
                         <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" disabled>
-                        <input type="text" class="form-control" placeholder="Add new list item..." aria-label="Add new list item"
-                            aria-describedby="basic-addon1" @keyup.enter="addNewListItem(index1)">
+                        <input type="text" class="form-control" placeholder="Add new list item..." aria-label="Add new list item" aria-describedby="basic-addon1" @keyup.enter="addNewListItem(index1)">
                     </div>
                     <div>
                         <p id="time">{{note.datetime}}</p>
