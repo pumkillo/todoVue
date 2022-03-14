@@ -22,15 +22,16 @@
             <div class="container-sm d-flex flex-row align-items-center">
                 <div class="input-group mb-3" id="search">
                     <input type="text" class="form-control" placeholder="Search..." aria-label="Search..."
-                        aria-describedby="basic-addon1">
+                        aria-describedby="basic-addon1" v-model.trim="query" @input="search">
                 </div>
                 <div class="mb-3">
                     <input class="btn btn-primary" type="button" value="Add new notepad" @click="addNewNote">
                 </div>
             </div>
             <!-- /search -->
+            <p v-if="queryLength === 0">No notes found</p>
 
-            <div class="d-flex justify-content-center notes" v-for="(note, index1) in notes" :key="index1">
+            <div class="d-flex justify-content-center notes" v-for="(note, index1) in queryRes" :key="index1">
                 <!-- color block -->
                 <color-block :color="note.color"></color-block>
                 <div class="container d-flex flex-column border border-2 border-start-0">
@@ -50,7 +51,7 @@
                     </div>
                     <div class="d-flex align-items-center listitem">
                         <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" disabled>
-                        <input type="text" class="form-control" placeholder="Add new list item" aria-label="Add new list item"
+                        <input type="text" class="form-control" placeholder="Add new list item..." aria-label="Add new list item"
                             aria-describedby="basic-addon1" @keyup.enter="addNewListItem(index1)">
                     </div>
                     <div>
