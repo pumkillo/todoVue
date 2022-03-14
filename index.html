@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The fourth day</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script src="assets/vue.js"></script>
+    <script src="assets/js/main.js" defer></script>
+</head>
+
+<body>
+    <div id="app">
+        <div class="container-sm d-flex flex-column align-items-center">
+            <!-- search -->
+            <div class="container-sm d-flex flex-row align-items-center">
+                <div class="input-group mb-3" id="search">
+                    <input type="text" class="form-control" placeholder="Search..." aria-label="Search..."
+                        aria-describedby="basic-addon1">
+                </div>
+                <div class="mb-3">
+                    <input class="btn btn-primary" type="button" value="Add new notepad" @click="addNewNote">
+                </div>
+            </div>
+            <!-- /search -->
+
+            <div class="d-flex justify-content-center notes" v-for="(note, index1) in notes" :key="index1">
+                <!-- color block -->
+                <color-block :color="note.color"></color-block>
+                <div class="container d-flex flex-column border border-2 border-start-0">
+                    <div class="d-flex flex-row justify-content-between align-items-center border-bottom border-2">
+                        <input v-model.trim.lazy="note.name" class="form-control title" placeholder="Note title...">
+                        <div class="container d-flex flex-row justify-content-end align-items-center">
+                            <input class="btn-light form-control-color" type="color" v-model="note.color">
+                            <input class="btn btn-danger" type="button" value="Delete" @click="deleteNote(index1)">
+
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center listitem" v-for="(item, index2) in note.todolist" :key="index2">
+                        <input class="form-check-input" type="checkbox" value="" :id="[index1, index2]">
+                        <label class="form-check-label " :for="[index1, index2]">
+                            <h6>{{note.todolist[index2]}}</h6>
+                        </label>
+                    </div>
+                    <div class="d-flex align-items-center listitem">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" disabled>
+                        <input type="text" class="form-control" placeholder="Add new list item" aria-label="Add new list item"
+                            aria-describedby="basic-addon1" @keyup.enter="addNewListItem(index1)">
+                    </div>
+                    <div>
+                        <p id="time">{{note.datetime}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
