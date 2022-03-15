@@ -22,7 +22,7 @@ let app = new Vue({
         name: "Shopping list",
         todolist: [
           { name: "milk", checked: false, priority: [] },
-          { namw: "bread", checked: true, priority: [] },
+          { name: "bread", checked: true, priority: [] },
         ],
         datetime: "12:15",
         timestamp: 3495834995,
@@ -99,7 +99,7 @@ let app = new Vue({
       if (event.target.value !== "") {
         this.notes[index].todolist.push({
           name: event.target.value,
-          checked: true,
+          checked: false,
           priority: [],
         });
         event.target.value = "";
